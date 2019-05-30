@@ -26,25 +26,31 @@
         <Grid x:Name="ButtonGrid" Height="45" Margin="10,45,10,0" VerticalAlignment="Top" Background="#FF7A9097">
             <Button Content="Button" HorizontalAlignment="Left" Margin="500,13,0,0" VerticalAlignment="Top" Width="75"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="590,13,0,0" VerticalAlignment="Top" Width="75"/>
-            <ComboBox x:Name="searchBox" HorizontalAlignment="Left" Margin="20,13,0,0" VerticalAlignment="Top" Width="270" IsEditable="True"/>
-            <ComboBox x:Name="filterBox" HorizontalAlignment="Left" Margin="295,13,0,0" VerticalAlignment="Top" Width="190" IsReadOnly="True" SelectedIndex="0">
+
+            <!--<ComboBox x:Name="searchBox" HorizontalAlignment="Left" Margin="20,13,0,0" VerticalAlignment="Top" Width="270" IsEditable="True" GotFocus="SearchBox_GotFocus" KeyDown="SearchBox_GotFocus"/>-->
+            <ComboBox xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Name="searchBox"
+                      Margin="75,13,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="260" 
+                      IsEditable="True"
+                      GotFocus="SearchBox_GotFocus" KeyDown="SearchBox_GotFocus">
+                <ComboBox.Resources>
+                    <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">0</sys:Double>
+                </ComboBox.Resources>
+            </ComboBox>
+
+            <ComboBox x:Name="filterBox" HorizontalAlignment="Left" Margin="350,13,0,0" VerticalAlignment="Top" Width="130" IsReadOnly="True" SelectedIndex="0">
                 <ComboBoxItem Content="All"/>
                 <ComboBoxItem Content="Account ID"/>
                 <ComboBoxItem Content="Client"/>
             </ComboBox>
+
+            <Label Content="Jobs To Show" HorizontalAlignment="Left" Margin="690,11,0,0" VerticalAlignment="Top" Width="90"/>
             <ComboBox x:Name="filterBox_Copy" HorizontalAlignment="Left" Margin="785,13,0,0" VerticalAlignment="Top" Width="160" IsReadOnly="True" SelectedIndex="0">
                 <ComboBoxItem Content="All Jobs"/>
                 <ComboBoxItem Content="Completed Jobs"/>
                 <ComboBoxItem Content="Pending Jobs"/>
             </ComboBox>
-            <Label Content="Jobs To Show" HorizontalAlignment="Left" Margin="690,11,0,0" VerticalAlignment="Top" Width="90"/>
-            <!--<ComboBox>
-                <ComboBoxItem>Normal Item</ComboBoxItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Other: " VerticalAlignment="Center"/>
-                    <TextBox>Enter text...</TextBox>
-                </StackPanel>
-            </ComboBox>-->
+            <Label Content="Search :" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top"/>
+
         </Grid>
 
         <Grid x:Name="JobGrid" Margin="10,110,10,10" Background="#FFCF9F9F">

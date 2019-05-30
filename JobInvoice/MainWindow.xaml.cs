@@ -39,5 +39,13 @@ namespace JobInvoice
         {
 
         }
+
+        // search box functions
+        private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            searchBox.IsDropDownOpen = true;
+        }
+
+        
     }
 }
