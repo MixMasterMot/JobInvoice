@@ -16,6 +16,12 @@ namespace JobInvoice.Models
         public List<StockItem> StockItems { get; set; } = new List<StockItem>();
         public int TimeRemaining { get; set; } = 0;
         public bool Completed { get; set; } = false;
+        public double HourRate { get; set; } = 0;
+        public double CompletionTime { get; set; } = 0;
+        public double LabourCost { get; set; } = 0;
+        public double JobTotalExcVat { get; set; } = 0;
+        public double JobVat { get; set; } = 0;
+        public double JobTotalIncVat { get; set; } = 0;
         public string StockItemsToString()
         {
             string StockItemString = "";

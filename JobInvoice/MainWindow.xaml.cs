@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using JobInvoice.Models;
+using JobInvoice.Windows;
 
 namespace JobInvoice
 {
@@ -27,17 +29,24 @@ namespace JobInvoice
 
         private void btnNewJob_Click(object sender, RoutedEventArgs e)
         {
-
+            NewJob newJob = new NewJob();
+            if (newJob.ShowDialog() == true)
+            {
+                var result = newJob.result;
+            }
+            //newJob.Show();
         }
 
         private void btnNewClient_Click(object sender, RoutedEventArgs e)
         {
-
+            NewClient newClient = new NewClient();
+            //newClient.Show();
         }
 
         private void btnManageStock_Click(object sender, RoutedEventArgs e)
         {
-
+            ManageStock manageStock = new ManageStock();
+            //manageStock.Show();
         }
 
         // search box functions

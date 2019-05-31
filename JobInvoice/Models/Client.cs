@@ -11,12 +11,14 @@ namespace JobInvoice.Models
         public string ClientID { get; set; }
         public string Address { get; set; } = "";
         public string FirstName { get; set; } = "";
-        public string SurName { get; set; } = "";
+        public string Surname { get; set; } = "";
+        public string Number { get; set; } = "";
+        public string Email { get; set; } = "";
         public string DisplayName { get; set; } = "";
 
         private void SetDisplayname()
         {
-            DisplayName = FirstName + " " + SurName;
+            DisplayName = FirstName + " " + Surname;
         }
     }
 }

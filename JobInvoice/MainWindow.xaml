@@ -19,7 +19,7 @@
                 </MenuItem>
                 <Button x:Name="btnNewJob" Content="Add New Job" Height="25" VerticalAlignment="Center" Width="95" Margin="5,2,0,2" Click="btnNewJob_Click" HorizontalAlignment="Center" />
                 <Button x:Name="btnNewClient" Content="Add New Client" Height="25" VerticalAlignment="Center" Width="95" Margin="5,2,0,2" Click="btnNewClient_Click" HorizontalAlignment="Center" />
-                <Button x:Name="btnManageStock" Content="Add New Client" Height="25" VerticalAlignment="Center" Width="95" Margin="5,2,0,2" Click="btnManageStock_Click" HorizontalAlignment="Center" />
+                <Button x:Name="btnManageStock" Content="Manage Stock" Height="25" VerticalAlignment="Center" Width="95" Margin="5,2,0,2" Click="btnManageStock_Click" HorizontalAlignment="Center" />
             </Menu>
         </DockPanel>
 
