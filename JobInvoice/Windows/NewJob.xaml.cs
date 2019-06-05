@@ -36,9 +36,32 @@ namespace JobInvoice.Windows
 
         private void BtnAddJob_Click(object sender, RoutedEventArgs e)
         {
-            result = SetJob();
+            //result = SetJob();
+            result = TestJob();
             Window.GetWindow(this).DialogResult = true;
             Window.GetWindow(this).Close();
+        }
+
+        private Job TestJob()
+        {
+            Job job = new Job();
+            job.JobID = "111";
+            job.ClientID = "k1";
+            job.ClientName = "Koos Els";
+            job.Description = "Test description \n 2nd Line";
+            job.DateIn = new DateTime(2019,5,1);
+            job.DateOut = new DateTime(2019, 6, 1);
+            job.StockItems = new List<StockItem>();
+            job.TimeRemaining = 120;
+            job.Completed = false;
+            job.HourRate = 200;
+            job.CompletionTime = 200;
+            job.LabourCost = 500;
+            job.JobTotalExcVat = 1000;
+            job.JobVat = 50;
+            job.JobTotalIncVat = 1050;
+
+            return job;
         }
 
         private Job SetJob()
@@ -46,6 +69,7 @@ namespace JobInvoice.Windows
             Job job = new Job();
             job.JobID = lblJobID.Content.ToString();
             job.ClientID = comboClientID.Text;
+            job.ClientName = comboClientName.Text;
             job.Description = txtDescription.Text;
             job.DateIn = dateStart.SelectedDate.Value.Date;
             job.DateOut = dateEnd.SelectedDate.Value.Date;

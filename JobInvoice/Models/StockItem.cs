@@ -10,7 +10,6 @@ namespace JobInvoice.Models
     {
         public string Name { get; set; }
         public double Price { get; set; } = 0;
-
         public string ToStockString => Name + "_%_" + Price.ToString();
     }
 }

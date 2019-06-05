@@ -10,11 +10,13 @@ namespace JobInvoice.Models
     {
         public string JobID { get; set; }
         public string ClientID { get; set; }
+        public string ClientName { get; set; }
         public string Description { get; set; }
         public DateTime DateIn { get; set; }
         public DateTime DateOut { get; set; }
         public List<StockItem> StockItems { get; set; } = new List<StockItem>();
         public int TimeRemaining { get; set; } = 0;
+        public bool Working { get; set; } = false;
         public bool Completed { get; set; } = false;
         public double HourRate { get; set; } = 0;
         public double CompletionTime { get; set; } = 0;

@@ -75,6 +75,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AllJobsViewModel.cs" />
     <Compile Include="Windows\ManageClients.xaml.cs">
       <DependentUpon>ManageClients.xaml</DependentUpon>
     </Compile>

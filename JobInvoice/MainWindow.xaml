@@ -11,11 +11,10 @@
         <DockPanel Height="30" LastChildFill="False" Margin="10,0,10,730" VerticalAlignment="Top" Background="#FF939393">
             <Menu IsMainMenu="True" DockPanel.Dock="Top" Height="30" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.9" Background="#FFD46262" Margin="0,0,2,0">
                 <MenuItem Header="_Main Menu" VerticalAlignment="Center" Height="26" Margin="5,4,0,2" HorizontalAlignment="Center">
-                    <MenuItem Header="_Select Images" />
-                    <MenuItem x:Name="btnToJson" Header="_Convert KML To JSON"  />
-                    <MenuItem x:Name="btnGetPenList" Header="_Get Pen List"  />
-                    <MenuItem Header="_Count" />
-                    <MenuItem Header="_Exit" />
+                    <MenuItem x:Name="menuManageClients" Header="Manage Clients"/>
+                    <MenuItem x:Name="menuManageJobs" Header="Manage Jobs"/>
+                    <MenuItem x:Name="menuManageStock" Header="Manage Stock"/>
+                    <MenuItem x:Name="menuExit" Header="_Exit"/>
                 </MenuItem>
                 <Button x:Name="btnNewJob" Content="Add New Job" Height="25" VerticalAlignment="Center" Width="95" Margin="5,2,0,2" Click="btnNewJob_Click" HorizontalAlignment="Center" />
                 <Button x:Name="btnNewClient" Content="Add New Client" Height="25" VerticalAlignment="Center" Width="95" Margin="5,2,0,2" Click="btnNewClient_Click" HorizontalAlignment="Center" />
@@ -56,18 +55,33 @@
         <Grid x:Name="JobGrid" Margin="10,110,10,10" Background="#FFCF9F9F">
             <ScrollViewer x:Name="pendingImageScroll" Margin="5" HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
-                <DataGrid x:Name="JobDataGrid" Margin="10" Background="#FF5891F3">
+                <DataGrid x:Name="JobDataGrid" Margin="10" Background="#FF5891F3" AutoGenerateColumns="False" CanUserAddRows="false">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Job ID" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Account ID" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Client" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Description"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Date Received" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Due Date" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Total" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Time Remaining" IsReadOnly="True"/>
-                        <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Working"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Completed" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding JobID}"  Header="Job ID" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding ClientID}" Header="Account ID" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding ClientName}"  Header="Client" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Description}"  Header="Description"/>
+                        <DataGridTextColumn Binding="{Binding DateIn}"  Header="Date Received" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding DateOut}"  Header="Due Date" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding JobTotalIncVat}"  Header="Total" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding TimeRemaining}"  Header="Time Remaining" IsReadOnly="True"/>
+                        <!--<DataGridCheckBoxColumn Binding="{Binding Working}" x:Name="checkWorking" Header="Working" IsReadOnly="False"/>-->
+                        <DataGridTemplateColumn Header="Working">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="checkWorking" Checked="CheckWorking_Checked" Unchecked="CheckWorking_Unchecked" IsChecked="{Binding Path=IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!--<DataGridCheckBoxColumn Binding="{Binding Completed}"  Header="Completed" IsReadOnly="False"/>-->
+                        <DataGridTemplateColumn Header="Completed">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="checkCompleted" IsChecked="{Binding Path=IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>

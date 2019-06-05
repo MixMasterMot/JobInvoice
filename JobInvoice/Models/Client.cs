@@ -15,7 +15,6 @@ namespace JobInvoice.Models
         public string Number { get; set; } = "";
         public string Email { get; set; } = "";
         public string DisplayName { get; set; } = "";
-
         private void SetDisplayname()
         {
             DisplayName = FirstName + " " + Surname;
