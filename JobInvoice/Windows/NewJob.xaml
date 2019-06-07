@@ -28,7 +28,7 @@
         <Grid Height="250" Margin="20,362,37,0" VerticalAlignment="Top" Background="#FF9B9B9B" RenderTransformOrigin="0.503,0.992">
             <ScrollViewer x:Name="pendingImageScroll" Margin="5" HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
-                <DataGrid Margin="10,7,10,13" Grid.RowSpan="2">
+                <DataGrid Margin="10,7,10,13" Grid.RowSpan="2" CanUserAddRows="True" CanUserDeleteRows="True">
                     <DataGrid.Columns>
                         <DataGridComboBoxColumn ClipboardContentBinding="{x:Null}" Header="Material" SelectedValueBinding="{x:Null}" SelectedItemBinding="{x:Null}" TextBinding="{x:Null}" Width="250"/>
                         <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="VAT" Width="50"/>

@@ -53,7 +53,7 @@ namespace JobInvoice.Windows
             job.DateOut = new DateTime(2019, 6, 1);
             job.StockItems = new List<StockItem>();
             job.TimeRemaining = 120;
-            job.Completed = false;
+            job.Completed = true;
             job.HourRate = 200;
             job.CompletionTime = 200;
             job.LabourCost = 500;
@@ -76,12 +76,12 @@ namespace JobInvoice.Windows
             job.StockItems = new List<StockItem>();
             job.TimeRemaining = Convert.ToInt32(txtTimeLimit.Text);
             job.Completed = false;
-            job.HourRate = Convert.ToDouble(txtRate.Text);
-            job.CompletionTime = Convert.ToDouble(txtTime.Text);
-            job.LabourCost = Convert.ToDouble(txtTotalLabour.Text);
-            job.JobTotalExcVat = Convert.ToDouble(txtTotalExcVat.Text);
-            job.JobVat = Convert.ToDouble(txtTotalVat.Text);
-            job.JobTotalIncVat = Convert.ToDouble(txtTotalIncVat.Text);
+            job.HourRate = Convert.ToDecimal(txtRate.Text);
+            job.CompletionTime = Convert.ToDecimal(txtTime.Text);
+            job.LabourCost = Convert.ToDecimal(txtTotalLabour.Text);
+            job.JobTotalExcVat = Convert.ToDecimal(txtTotalExcVat.Text);
+            job.JobVat = Convert.ToDecimal(txtTotalVat.Text);
+            job.JobTotalIncVat = Convert.ToDecimal(txtTotalIncVat.Text);
 
             return job;
         }

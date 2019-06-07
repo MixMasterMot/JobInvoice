@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JobInvoice.Windows"
         mc:Ignorable="d"
-        Title="ManageStock" Height="450" Width="800">
+        Title="ManageStock" Height="426" Width="569">
     <Grid>
-        
+        <Grid Height="295" Margin="25,25,10,0" VerticalAlignment="Top">
+            <ScrollViewer x:Name="pendingImageScroll" Margin="5,5,5,5" HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Width="500">
+                <DataGrid x:Name="datagridStock" HorizontalAlignment="Left" Height="285" VerticalAlignment="Top" Width="500"
+                          AutoGenerateColumns="False" CanUserAddRows="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Name}"  Header="Stock Name" IsReadOnly="False" Width="300"/>
+                        <DataGridTextColumn Binding="{Binding Price}" Header="Cost per meter" IsReadOnly="False" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Grid>
+        <Button x:Name="btnUpdate" Content="Update Stock" HorizontalAlignment="Left" Margin="35,335,0,0" VerticalAlignment="Top" Width="100" Height="47" Click="BtnUpdate_Click"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="190,335,0,0" VerticalAlignment="Top" Width="100" Height="47" Click="btnCancel_Click"/>
     </Grid>
 </Window>

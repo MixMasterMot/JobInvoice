@@ -26,8 +26,6 @@ namespace JobInvoice
     public partial class MainWindow : Window
     {
         private AllJobsViewModel AllJobsViewModel = new AllJobsViewModel();
-        private int timerTickCount = 0;
-        private bool hasSelectionChanged = false;
         private DispatcherTimer timer;
         private int datagridIndex = 0;
         public MainWindow()
@@ -49,7 +47,6 @@ namespace JobInvoice
         {
             DispatcherTimer timer = (DispatcherTimer)sender;
             AllJobsViewModel.JobListObservable[datagridIndex].TimeRemaining--;
-            
         }
 
         private void SetDataGridSource()
@@ -70,13 +67,6 @@ namespace JobInvoice
             //newJob.Show();
         }
 
-        private void JobDataGrid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
-        {
-            //// Have to do this in the unusual case where the border of the cell gets selected
-            //// and causes a crash 'EditItem is not allowed'
-            e.Cancel = true;
-        }
-
         private void btnNewClient_Click(object sender, RoutedEventArgs e)
         {
             NewClient newClient = new NewClient();
@@ -86,7 +76,7 @@ namespace JobInvoice
         private void btnManageStock_Click(object sender, RoutedEventArgs e)
         {
             ManageStock manageStock = new ManageStock();
-            manageStock.Show();
+            manageStock.ShowDialog();
         }
 
         // search box functions
@@ -95,6 +85,7 @@ namespace JobInvoice
             searchBox.IsDropDownOpen = true;
         }
 
+        // checkbox logic for datagrid
         private void CheckWorking_Checked(object sender, RoutedEventArgs e)
         {
             // start timer
@@ -106,6 +97,24 @@ namespace JobInvoice
         {
             // stop timer
             timer.Stop();
+        }
+
+        private void CheckCompleted_Checked(object sender, RoutedEventArgs e)
+        {
+            datagridIndex = JobDataGrid.SelectedIndex;
+            if (datagridIndex >= 0)
+            {
+                AllJobsViewModel.JobListObservable[datagridIndex].Completed = true;
+            }
+        }
+
+        private void CheckCompleted_Unchecked(object sender, RoutedEventArgs e)
+        {
+            datagridIndex = JobDataGrid.SelectedIndex;
+            if (datagridIndex >= 0)
+            {
+                AllJobsViewModel.JobListObservable[datagridIndex].Completed = false;
+            }
         }
     }
 }
