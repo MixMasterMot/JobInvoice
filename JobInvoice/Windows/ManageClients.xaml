@@ -7,6 +7,23 @@
         mc:Ignorable="d"
         Title="ManageClients" Height="450" Width="800">
     <Grid>
-        
+        <Grid Height="295" Margin="25,25,10,0" VerticalAlignment="Top">
+            <ScrollViewer x:Name="pendingImageScroll" Margin="5,5,5,5" HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" >
+                <DataGrid x:Name="datagridClients" HorizontalAlignment="Left" Height="285" VerticalAlignment="Top" 
+                          AutoGenerateColumns="False" CanUserAddRows="True" Width="750">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ClientID}"  Header="Client ID" IsReadOnly="False" Width="80"/>
+                        <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" IsReadOnly="False" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding Surname}"  Header="Last Name" IsReadOnly="False" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding Number}" Header="Number" IsReadOnly="False" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding Email}"  Header="e-mail" IsReadOnly="False" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding Address}" Header="Address" IsReadOnly="False" Width="200"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Grid>
+        <Button x:Name="btnUpdate" Content="Update Clients" HorizontalAlignment="Left" Margin="35,335,0,0" VerticalAlignment="Top" Width="100" Height="47" Click="BtnUpdate_Click"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="190,335,0,0" VerticalAlignment="Top" Width="100" Height="47" Click="btnCancel_Click"/>
     </Grid>
 </Window>

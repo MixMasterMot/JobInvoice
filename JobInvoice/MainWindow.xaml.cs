@@ -64,13 +64,14 @@ namespace JobInvoice
                 //JobDataGrid.Items.Add(result);
                 AllJobsViewModel.JobListObservable.Add(result);
             }
-            //newJob.Show();
         }
 
         private void btnNewClient_Click(object sender, RoutedEventArgs e)
         {
-            NewClient newClient = new NewClient();
-            newClient.Show();
+            //NewClient newClient = new NewClient();
+            //newClient.Show();
+            ManageClients manageClients = new ManageClients();
+            manageClients.ShowDialog();
         }
 
         private void btnManageStock_Click(object sender, RoutedEventArgs e)
@@ -97,6 +98,7 @@ namespace JobInvoice
         {
             // stop timer
             timer.Stop();
+            
         }
 
         private void CheckCompleted_Checked(object sender, RoutedEventArgs e)

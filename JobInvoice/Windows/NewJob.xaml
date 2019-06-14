@@ -5,14 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JobInvoice.Windows"
         mc:Ignorable="d"
-        Title="Add New Job" Height="800" Width="1000">
+        Title="Add New Job" Height="731" Width="1000">
+    
     <Grid Margin="0,0,2,5">
         <Label Content="Job ID :" Margin="20,10,897,0" VerticalAlignment="Top" FontSize="15"/>
         <Label x:Name="lblJobID" Content="0000000" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" FontSize="15" Width="200"/>
         <Label Content="Client ID :" HorizontalAlignment="Left" Margin="16,41,0,0" VerticalAlignment="Top" FontSize="15"/>
         <Label Content="Client Name :" HorizontalAlignment="Left" Margin="16,85,0,0" VerticalAlignment="Top" FontSize="15"/>
-        <ComboBox x:Name="comboClientName" HorizontalAlignment="Left" Margin="150,89,0,0" VerticalAlignment="Top" Width="200" IsEditable="True" FontSize="15"/>
-        <ComboBox x:Name="comboClientID" HorizontalAlignment="Left" Margin="150,45,0,0" VerticalAlignment="Top" Width="200" IsEditable="True" FontSize="15"/>
+        <ComboBox x:Name="comboClientName" HorizontalAlignment="Left" Margin="150,89,0,0" VerticalAlignment="Top" Width="200" IsEditable="True" 
+                  FontSize="15" DropDownOpened="ComboClientName_DropDownOpened" PreviewTextInput="ComboClientName_PreviewTextInput"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" MaxDropDownHeight="200"/>
+        <ComboBox x:Name="comboClientID" HorizontalAlignment="Left" Margin="150,45,0,0" VerticalAlignment="Top" Width="200" IsEditable="True" 
+                  FontSize="15" PreviewTextInput="ComboClientID_PreviewTextInput" DropDownOpened="ComboClientID_DropDownOpened"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" MaxDropDownHeight="200"/>
         <Label Content="Start Date :" HorizontalAlignment="Left" Margin="496,45,0,0" VerticalAlignment="Top" Width="94" FontSize="15"/>
         <Label Content="Due Date :" HorizontalAlignment="Left" Margin="496,90,0,0" VerticalAlignment="Top" Width="94" FontSize="15"/>
         <DatePicker x:Name="dateEnd" HorizontalAlignment="Left" Margin="595,91,0,0" VerticalAlignment="Top" Width="155" FontSize="15" Height="30"/>
@@ -26,16 +31,35 @@
         <Label Content="Material :" HorizontalAlignment="Left" Margin="20,320,0,0" VerticalAlignment="Top" Width="95" FontSize="20"/>
 
         <Grid Height="250" Margin="20,362,37,0" VerticalAlignment="Top" Background="#FF9B9B9B" RenderTransformOrigin="0.503,0.992">
-            <ScrollViewer x:Name="pendingImageScroll" Margin="5" HorizontalScrollBarVisibility="Auto"
+            <ScrollViewer x:Name="materialsScroll" Margin="5" HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
-                <DataGrid Margin="10,7,10,13" Grid.RowSpan="2" CanUserAddRows="True" CanUserDeleteRows="True">
+                <DataGrid x:Name="datagridMaterials" Margin="10,7,10,13" Grid.RowSpan="2" CanUserAddRows="True" 
+                          CanUserDeleteRows="True" AutoGenerateColumns="False" DataGridCell.GotFocus="DataGrid_CellGotFocus">
                     <DataGrid.Columns>
-                        <DataGridComboBoxColumn ClipboardContentBinding="{x:Null}" Header="Material" SelectedValueBinding="{x:Null}" SelectedItemBinding="{x:Null}" TextBinding="{x:Null}" Width="250"/>
-                        <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="VAT" Width="50"/>
-                        <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Height (mm)"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Width (mm)"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="VAT" Width="100"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Total exc VAT" Width="100"/>
+                        <!--<DataGridComboBoxColumn x:Name="datagridComboColumn" Header="Material" SelectedItemBinding="{Binding Name}" Width="150"/>-->
+                        <DataGridTemplateColumn Header="Material" Width="150" CanUserResize="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="datagridComboColumn" ItemsSource="{StaticResource stockItems}" SelectedItem="{Binding Name}" Width="150"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <DataGridTemplateColumn Header="VAT">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Viewbox Margin="2,0,2,0">
+                                        <CheckBox x:Name="checkWorking" IsChecked="{Binding Vat}"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Viewbox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <DataGridTextColumn Binding="{Binding Height}" ClipboardContentBinding="{x:Null}" Header="Height (mm)" Width="100"/>
+                        <DataGridTextColumn Binding="{Binding Width}" ClipboardContentBinding="{x:Null}" Header="Width (mm)" Width="100"/>
+                        <!--<DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="VAT" Width="100"/>-->
+                        <DataGridTextColumn Binding="{Binding Price}" ClipboardContentBinding="{x:Null}" Header="Total exc VAT" Width="100"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>

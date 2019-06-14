@@ -10,7 +10,7 @@ namespace JobInvoice.Models
 {
     public class StockItem : INotifyPropertyChanged
     {
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void NotifyPropertyChanged(string propertyName = null)
         {
@@ -21,7 +21,7 @@ namespace JobInvoice.Models
         }
         public int StockID { get; set; } = -1;
 
-        public string _Name;
+        private string _Name;
         public string Name
         {
             get { return _Name; }
@@ -35,7 +35,8 @@ namespace JobInvoice.Models
             }
         }
 
-        public decimal _Price = 0;
+        private decimal _Price = 0;
+
         public decimal Price
         {
             get { return _Price; }

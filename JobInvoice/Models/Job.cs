@@ -21,7 +21,7 @@ namespace JobInvoice.Models
         public string Description { get; set; }
         public DateTime DateIn { get; set; }
         public DateTime DateOut { get; set; }
-        public List<StockItem> StockItems { get; set; } = new List<StockItem>();
+        public List<UsedStockItem> StockItems { get; set; } = new List<UsedStockItem>();
         public int TimeRemaining
         {
             get { return _timeReamining; }
@@ -45,10 +45,10 @@ namespace JobInvoice.Models
         public string StockItemsToString()
         {
             string StockItemString = "";
-            foreach(StockItem item in StockItems)
-            {
-                StockItemString = StockItemString + "[" + item.ToStockString + "]";
-            }
+            //foreach(StockItem item in StockItems)
+            //{
+            //    StockItemString = StockItemString + "[" + item.ToStockString + "]";
+            //}
             return StockItemString;
         }
     }

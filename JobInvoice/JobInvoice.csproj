@@ -50,6 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -71,16 +72,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controllers\CompareClientsList.cs" />
     <Compile Include="Controllers\CompareStockItemList.cs" />
     <Compile Include="DatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Models\UsedStockItem.cs" />
+    <Compile Include="SQLFunctions\SqlClient.cs" />
     <Compile Include="SQLFunctions\SqlStock.cs" />
     <Compile Include="SQLFunctions\SqlConString.cs" />
+    <Compile Include="SQLFunctions\SqlUsedStock.cs" />
+    <Compile Include="ViewModels\AllClientsViewModel.cs" />
     <Compile Include="ViewModels\AllJobsViewModel.cs" />
     <Compile Include="ViewModels\AllStockViewModel.cs" />
+    <Compile Include="ViewModels\AllUsedStockItemsViewModel.cs" />
     <Compile Include="Windows\ManageClients.xaml.cs">
       <DependentUpon>ManageClients.xaml</DependentUpon>
     </Compile>

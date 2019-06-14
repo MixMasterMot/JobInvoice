@@ -19,10 +19,7 @@ namespace JobInvoice.ViewModels
             set
             {
                 jobListObservable = value;
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("JobListObservable"));
-                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("JobListObservable"));
             }
         }
 
@@ -30,5 +27,6 @@ namespace JobInvoice.ViewModels
         {
             JobListObservable = new ObservableCollection<Job>();
         }
+
     }
 }

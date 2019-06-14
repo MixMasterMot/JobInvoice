@@ -63,7 +63,7 @@ namespace JobInvoice.SQLFunctions
             InsertStockItems(NewStock);
         }
 
-        internal void DeletItems(List<int> deletedItems)
+        public void DeletItems(List<int> deletedItems)
         {
             string query = "Delete from StockItem where ItemID=@id";
             using (SqlConnection connection = new SqlConnection(MasterConnectionString))
