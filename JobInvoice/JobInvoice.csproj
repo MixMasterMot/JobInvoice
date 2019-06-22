@@ -81,9 +81,11 @@
     </Compile>
     <Compile Include="Models\UsedStockItem.cs" />
     <Compile Include="SQLFunctions\SqlClient.cs" />
+    <Compile Include="SQLFunctions\SqlJob.cs" />
     <Compile Include="SQLFunctions\SqlStock.cs" />
     <Compile Include="SQLFunctions\SqlConString.cs" />
     <Compile Include="SQLFunctions\SqlUsedStock.cs" />
+    <Compile Include="Validation\UsedStockItemValidationRule.cs" />
     <Compile Include="ViewModels\AllClientsViewModel.cs" />
     <Compile Include="ViewModels\AllJobsViewModel.cs" />
     <Compile Include="ViewModels\AllStockViewModel.cs" />

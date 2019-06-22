@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JobInvoice.Models
 {
-    public class UsedStockItem:INotifyPropertyChanged
+    public class UsedStockItem : INotifyPropertyChanged, IEditableObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void NotifyPropertyChanged(string propertyName = null)
@@ -31,7 +31,7 @@ namespace JobInvoice.Models
                 if (_JobID != value)
                 {
                     _JobID = value;
-                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("JobID");
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace JobInvoice.Models
                 if (_Name != value)
                 {
                     _Name = value;
-                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("Name");
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace JobInvoice.Models
                 if (_Height != value)
                 {
                     _Height = value;
-                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("Height");
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace JobInvoice.Models
                 if (_Width != value)
                 {
                     _Width = value;
-                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("Width");
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace JobInvoice.Models
                 if (_Vat != value)
                 {
                     _Vat = value;
-                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("Vat");
                 }
             }
         }
@@ -91,10 +91,38 @@ namespace JobInvoice.Models
                 if (_Price != value)
                 {
                     _Price = value;
-                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("Price");
                 }
             }
         }
         public bool modified { get; set; } = true;
+
+        private UsedStockItem backupCopy;
+        private bool inEdit;
+
+        public void BeginEdit()
+        {
+            if (!inEdit) return;
+            inEdit = true;
+            backupCopy = (UsedStockItem)this.MemberwiseClone();
+        }
+        public void CancelEdit()
+        {
+            if (!inEdit) return;
+            inEdit = false;
+            this.JobID = backupCopy.JobID;
+            this.Name = backupCopy.Name;
+            this.Height = backupCopy.Height;
+            this.Width = backupCopy.Width;
+            this.Vat = backupCopy.Vat;
+            this.Price = backupCopy.Price;
+            this.modified = backupCopy.modified;
+        }
+        public void EndEdit()
+        {
+            if (!inEdit) return;
+            inEdit = false;
+            backupCopy = null;
+        }
     }
 }

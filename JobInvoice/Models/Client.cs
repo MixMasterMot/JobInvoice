@@ -85,7 +85,7 @@ namespace JobInvoice.Models
             {
                 if (_Email != value)
                 {
-                    _ClientID = value;
+                    _Email = value;
                     NotifyPropertyChanged();
                 }
             }

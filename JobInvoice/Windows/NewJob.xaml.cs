@@ -21,10 +21,13 @@ namespace JobInvoice.Windows
     /// <summary>
     /// Interaction logic for NewJob.xaml
     /// </summary>
+    
+    // Jou ma se foken kaffer poes hond 
+    
     public partial class NewJob : Window
     {
         // Constants
-        AllUsedStockItemsViewModel usedItems = new AllUsedStockItemsViewModel();
+        AllUsedStockItemsViewModel usedMaterials = new AllUsedStockItemsViewModel();
 
         // return job to mainwindow
         public Job result { get; set; }
@@ -40,16 +43,21 @@ namespace JobInvoice.Windows
         List<string> stockItems = new List<string>();
         Dictionary<string, StockItem> stockDict = new Dictionary<string, StockItem>();
 
+        //initialize form
         public NewJob()
         {
             this.Resources.Add("stockItems", stockItems);
+            //UsedStockItem item = new UsedStockItem();
+            //item.Name = "a";
+            //item.Height = 10;
+            //item.Vat = true;
+            //usedMaterials.UsedStockItemsObservable.Add(item);
             InitializeComponent();
             GetClients();
             GetMaterials();
             comboClientID.ItemsSource = ClientIDList;
             comboClientName.ItemsSource = ClientNameList;
-            datagridMaterials.ItemsSource = usedItems.UsedStockItemsObservable;
-            //datagridComboColumn.ItemsSource = stockItems;
+            datagridMaterials.ItemsSource = usedMaterials.UsedStockItemsObservable;
         }
 
         // get constants
@@ -115,31 +123,51 @@ namespace JobInvoice.Windows
             return null;
         }
         // Filter Client ID
-        private void ComboClientID_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void Generic_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            FilterComboBox(comboClientID, ClientIDList, e);
-        }
-        private void ComboClientID_DropDownOpened(object sender, EventArgs e)
-        {
-            if (String.IsNullOrWhiteSpace(comboClientID.Text))
-            {
-                comboClientID.ItemsSource = ClientIDList;
-            }
-        }
-        private void ComboClientName_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            FilterComboBox(comboClientName, ClientNameList, e);
-        }
-        private void ComboClientName_DropDownOpened(object sender, EventArgs e)
-        {
-            if (String.IsNullOrWhiteSpace(comboClientName.Text))
-            {
-                comboClientName.ItemsSource = ClientNameList;
-            }
-        }
-        private void FilterComboBox(ComboBox box, List<string> toFilter, TextCompositionEventArgs e)
-        {
+            ComboBox box = sender as ComboBox;
+            List<string> source = GetComboBoxSource(box.Name);
             string filterParm = box.Text + e.Text;
+            FilterComboBox(box, source, filterParm);
+            e.Handled=true;
+        }
+        private void Generic_DropDownOpened(object sender, EventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            List<string> source = GetComboBoxSource(box.Name);
+            if (string.IsNullOrWhiteSpace(box.Text))
+            {
+                box.ItemsSource = source;
+            }
+        }
+        private void Generic_BackSpaceFilter(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back)
+            {
+                ComboBox box = sender as ComboBox;
+                List<string> source = GetComboBoxSource(box.Name);
+                FilterComboBox(box, source, box.Text);
+            }
+        }
+        private List<string> GetComboBoxSource(string name)
+        {
+            if(name == "comboClientName")
+            {
+                return ClientNameList;
+            }
+            else if(name == "comboClientID")
+            {
+                return ClientIDList;
+            }
+            else if(name== "datagridComboColumn")
+            {
+                return stockItems;
+            }
+            return new List<string>();
+        }
+        private void FilterComboBox(ComboBox box, List<string> toFilter, string filterParm)
+        {
+            //string filterParm = box.Text + e.Text;
             List<string> filteredItems = toFilter.FindAll(x => x.ToLower().Contains(filterParm.ToLower()));
             box.ItemsSource = filteredItems;
             if (String.IsNullOrWhiteSpace(filterParm))
@@ -152,9 +180,17 @@ namespace JobInvoice.Windows
 
             var cmbTextBox = (TextBox)box.Template.FindName("PART_EditableTextBox", box);
             cmbTextBox.CaretIndex = filterParm.Length;
-            e.Handled = true;
+            //e.Handled = true;
         }
-
+        //Open Dropdown for combobox
+        private void Generic_OpenDropdown(object sender, MouseButtonEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            if (!box.IsDropDownOpen)
+            {
+                box.IsDropDownOpen = true;
+            }
+        }
         // actions triggerd from buton
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -173,13 +209,13 @@ namespace JobInvoice.Windows
         private Job TestJob()
         {
             Job job = new Job();
-            job.JobID = "111";
+            job.JobID = 111;
             job.ClientID = "k1";
             job.ClientName = "Koos Els";
             job.Description = "Test description \n 2nd Line";
             job.DateIn = new DateTime(2019,5,1);
             job.DateOut = new DateTime(2019, 6, 1);
-            job.StockItems = new List<StockItem>();
+            job.StockItems = new List<UsedStockItem>();
             job.TimeRemaining = 120;
             job.Completed = true;
             job.HourRate = 200;
@@ -194,13 +230,13 @@ namespace JobInvoice.Windows
         private Job SetJob()
         {
             Job job = new Job();
-            job.JobID = lblJobID.Content.ToString();
+            job.JobID = -1;
             job.ClientID = comboClientID.Text;
             job.ClientName = comboClientName.Text;
             job.Description = txtDescription.Text;
             job.DateIn = dateStart.SelectedDate.Value.Date;
             job.DateOut = dateEnd.SelectedDate.Value.Date;
-            job.StockItems = new List<StockItem>();
+            job.StockItems = new List<UsedStockItem>();
             job.TimeRemaining = Convert.ToInt32(txtTimeLimit.Text);
             job.Completed = false;
             job.HourRate = Convert.ToDecimal(txtRate.Text);
@@ -213,5 +249,6 @@ namespace JobInvoice.Windows
             return job;
         }
 
+       
     }
 }

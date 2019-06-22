@@ -15,7 +15,7 @@ namespace JobInvoice.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public string JobID { get; set; }
+        public int JobID { get; set; }
         public string ClientID { get; set; }
         public string ClientName { get; set; }
         public string Description { get; set; }
@@ -42,14 +42,5 @@ namespace JobInvoice.Models
         public decimal JobTotalExcVat { get; set; } = 0;
         public decimal JobVat { get; set; } = 0;
         public decimal JobTotalIncVat { get; set; } = 0;
-        public string StockItemsToString()
-        {
-            string StockItemString = "";
-            //foreach(StockItem item in StockItems)
-            //{
-            //    StockItemString = StockItemString + "[" + item.ToStockString + "]";
-            //}
-            return StockItemString;
-        }
     }
 }

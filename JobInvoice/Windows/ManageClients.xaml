@@ -11,7 +11,7 @@
             <ScrollViewer x:Name="pendingImageScroll" Margin="5,5,5,5" HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" >
                 <DataGrid x:Name="datagridClients" HorizontalAlignment="Left" Height="285" VerticalAlignment="Top" 
-                          AutoGenerateColumns="False" CanUserAddRows="True" Width="750">
+                          AutoGenerateColumns="False" CanUserAddRows="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding ClientID}"  Header="Client ID" IsReadOnly="False" Width="80"/>
                         <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" IsReadOnly="False" Width="150"/>

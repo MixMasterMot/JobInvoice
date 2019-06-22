@@ -69,7 +69,7 @@ namespace JobInvoice.SQLFunctions
 
         public void DeletItems(List<int> deletedItems)
         {
-            string query = "Delete from Clients where ClientID=@id";
+            string query = "Delete from UsedStock where JobID=@id";
             using (SqlConnection connection = new SqlConnection(MasterConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -78,6 +78,36 @@ namespace JobInvoice.SQLFunctions
                 {
                     command.Parameters.Clear();
                     command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+
+        public void InsertItems(List<UsedStockItem> items)
+        {
+            string query = "Insert into UsedStock values(@jobID, @name, @height, @width, @vat, @price)";
+            using (SqlConnection connection = new SqlConnection(MasterConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                foreach (UsedStockItem item in items)
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@jobID", item.JobID);
+                    command.Parameters.AddWithValue("@name", item.Name);
+                    command.Parameters.AddWithValue("@height", item.Height);
+                    command.Parameters.AddWithValue("@width", item.Width);
+                    if (item.Vat == true)
+                    {
+                        command.Parameters.AddWithValue("@vat", 1);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@vat", 0);
+                    }
+                    command.Parameters.AddWithValue("@vat", item.Vat);
+                    command.Parameters.AddWithValue("@price", item.Price);
                     command.ExecuteNonQuery();
                 }
                 connection.Close();

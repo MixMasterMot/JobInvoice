@@ -46,6 +46,8 @@ namespace JobInvoice.Windows
             CompareClientsList comp = new CompareClientsList();
             List<string> deletedID = comp.Compare(allClientsViewCompare.ClientListObservable, allClientsView.ClientListObservable);
             sqlClient.DeletItems(deletedID);
+            MessageBox.Show("Clients Updated");
+            this.Close();
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

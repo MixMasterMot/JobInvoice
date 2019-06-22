@@ -62,14 +62,13 @@ namespace JobInvoice
             {
                 Job result = newJob.result;
                 //JobDataGrid.Items.Add(result);
+                
                 AllJobsViewModel.JobListObservable.Add(result);
             }
         }
 
         private void btnNewClient_Click(object sender, RoutedEventArgs e)
         {
-            //NewClient newClient = new NewClient();
-            //newClient.Show();
             ManageClients manageClients = new ManageClients();
             manageClients.ShowDialog();
         }
