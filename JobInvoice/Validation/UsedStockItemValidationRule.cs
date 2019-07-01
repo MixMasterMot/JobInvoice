@@ -31,6 +31,10 @@ namespace JobInvoice.Validation
             {
                 return new ValidationResult(false, "Height must be >= 0");
             }
+            else if (item.UnitPrice<0)
+            {
+                return new ValidationResult(false, "Unit Price must be >= 0");
+            }
             else
             {
                 return ValidationResult.ValidResult;
@@ -38,10 +42,3 @@ namespace JobInvoice.Validation
         }
     }
 }
-
-//private int _JobID;
-//private string _Name;
-//private int _Height;
-//private int _Width;
-//private bool _Vat;
-//private decimal _Price;

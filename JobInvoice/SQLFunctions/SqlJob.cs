@@ -17,7 +17,7 @@ namespace JobInvoice.SQLFunctions
             using (SqlConnection connection = new SqlConnection(MasterConnectionString))
             using (SqlCommand command = connection.CreateCommand())
             {
-                command.CommandText = "Select * from UsedStock";
+                command.CommandText = "Select * from Jobs";
                 connection.Open();
                 using (var reader = command.ExecuteReader())
                 {
@@ -52,7 +52,7 @@ namespace JobInvoice.SQLFunctions
         }
         public void UpdateJob(List<Job> jobs)
         {
-            string query = "Update UsedStock set ClientID = @clientID, Description = @description, DateIn=@dateIn, " +
+            string query = "Update Jobs set ClientID = @clientID, Description = @description, DateIn=@dateIn, " +
                 "DateOut=@dateOut, TimeRemaining=@timeRemaining, Completed=@completed, HourRate=@hourRate, " +
                 "CompletionTime=@completionTime, LabourCost=@labourCost, JobTotalExcVat=@totExcVat, JobVat=@jobVat, " +
                 "JobTotalIncVat=@jobTotalIncVat where JobID = @id";
@@ -99,7 +99,7 @@ namespace JobInvoice.SQLFunctions
         }
         public void DeleteJob(List<int> jobs)
         {
-            string query = "Delete from UsedStock where ItemID=@id";
+            string query = "Delete from Jobs where JobID=@id";
             using (SqlConnection connection = new SqlConnection(MasterConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -114,5 +114,44 @@ namespace JobInvoice.SQLFunctions
             }
         }
 
+        public int AddNewJob(Job job)
+        {
+            List<Job> items = new List<Job>();
+            items.Add(job);
+            List<int> jobIDs= AddNewJob(items);
+            return jobIDs[0];
+        }
+
+        public List<int> AddNewJob(List<Job> jobs)
+        {
+            List<int> jobIDs = new List<int>();
+            string query = "Insert into Jobs output inserted.JobID values(@clientID, @description, @dateIn, @dateOut, @timeRemaining, " +
+                "@completed, @hourRate, @completionTime, @labourCost, @totExcVat, @jobVat, @jobTotalIncVat)";
+            using (SqlConnection connection = new SqlConnection(MasterConnectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                foreach (Job job in jobs)
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@clientID", job.ClientID);
+                    command.Parameters.AddWithValue("@description", job.Description);
+                    command.Parameters.AddWithValue("@dateIn", job.DateIn);
+                    command.Parameters.AddWithValue("@dateOut", job.DateOut);
+                    command.Parameters.AddWithValue("@timeRemaining", job.TimeRemaining);
+                    command.Parameters.AddWithValue("@completed", job.Completed);
+                    command.Parameters.AddWithValue("@hourRate", job.HourRate);
+                    command.Parameters.AddWithValue("@completionTime", job.CompletionTime);
+                    command.Parameters.AddWithValue("@labourCost", job.LabourCost);
+                    command.Parameters.AddWithValue("@totExcVat", job.JobTotalExcVat);
+                    command.Parameters.AddWithValue("@jobVat", job.JobVat);
+                    command.Parameters.AddWithValue("@jobTotalIncVat", job.JobTotalIncVat);
+                    int jobID = (int)command.ExecuteScalar();
+                    jobIDs.Add(jobID);
+                }
+                connection.Close();
+            }
+            return jobIDs;
+        }
     }
 }

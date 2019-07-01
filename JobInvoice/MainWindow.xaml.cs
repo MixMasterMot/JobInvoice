@@ -17,6 +17,8 @@ using JobInvoice.ViewModels;
 using JobInvoice.Models;
 using JobInvoice.Windows;
 using System.Windows.Threading;
+using JobInvoice.Controllers;
+using JobInvoice.SQLFunctions;
 
 namespace JobInvoice
 {
@@ -51,19 +53,21 @@ namespace JobInvoice
 
         private void SetDataGridSource()
         {
+            SqlJob sqlJob = new SqlJob();
+            AllJobsViewModel.JobListObservable = sqlJob.GetJobs();
             JobDataGrid.ItemsSource = AllJobsViewModel.JobListObservable;
-            //JobDataGrid.DataContext = jobs;
         }
 
+        // add new job
         private void btnNewJob_Click(object sender, RoutedEventArgs e)
         {
-            NewJob newJob = new NewJob();
+            NewJob newJob = new NewJob(new Job());
             if (newJob.ShowDialog() == true)
             {
                 Job result = newJob.result;
-                //JobDataGrid.Items.Add(result);
-                
-                AllJobsViewModel.JobListObservable.Add(result);
+                JobController controller = new JobController();
+                Job InsertedJob = controller.AddNewJob(result);
+                AllJobsViewModel.JobListObservable.Add(InsertedJob);
             }
         }
 
@@ -116,6 +120,53 @@ namespace JobInvoice
             {
                 AllJobsViewModel.JobListObservable[datagridIndex].Completed = false;
             }
+        }
+
+        // context menu action
+        private void EditJobContext_Click(object sender, RoutedEventArgs e)
+        {
+            int index = JobDataGrid.SelectedIndex;
+            NewJob newJob = new NewJob(AllJobsViewModel.JobListObservable[index]);
+            if (newJob.ShowDialog() == true)
+            {
+                Job result = newJob.result;
+                AllJobsViewModel.JobListObservable[index] = result;
+                JobController controller = new JobController();
+                controller.UpdateJob(result);
+            }
+        }
+
+        private void DeleteJobContext_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Delete this Job ?", "Caution!!!!!", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                int index = JobDataGrid.SelectedIndex;
+                JobController controller = new JobController();
+                controller.DeleteJob(AllJobsViewModel.JobListObservable[index]);
+                AllJobsViewModel.JobListObservable.RemoveAt(index);
+            }
+        }
+
+        private void PrintInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            PdfController pdfController = new PdfController();
+            Job job = JobDataGrid.CurrentItem as Job;
+            var response = pdfController.GeneratePDF(job);
+            if (response.Item1)
+            {
+                MessageBox.Show("PDF generated");
+            }
+            else if (response.Item2 != null)
+            {
+                MessageBox.Show(response.Item2);
+            }
+        }
+
+        private void MenuManageCompanyInfo_Click(object sender, RoutedEventArgs e)
+        {
+            ManageCompany manageCompany = new ManageCompany();
+            manageCompany.ShowDialog();
         }
     }
 }

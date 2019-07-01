@@ -31,6 +31,7 @@ namespace JobInvoice.SQLFunctions
                         stockItem.Width = (int)reader.GetValue(3);
                         stockItem.Vat = (bool)reader.GetValue(4);
                         stockItem.Price = (decimal)reader.GetValue(5);
+                        stockItem.UnitPrice = (decimal)reader.GetValue(6);
                         stockItem.modified = false;
                         items.Add(stockItem);
                     }
@@ -59,6 +60,7 @@ namespace JobInvoice.SQLFunctions
                         stockItem.Width = (int)reader.GetValue(3);
                         stockItem.Vat = (bool)reader.GetValue(4);
                         stockItem.Price = (decimal)reader.GetValue(5);
+                        stockItem.UnitPrice = (decimal)reader.GetValue(6);
                         stockItem.modified = false;
                         items.Add(stockItem);
                     }
@@ -67,6 +69,12 @@ namespace JobInvoice.SQLFunctions
             return items;
         }
 
+        public void DeletItems(int id)
+        {
+            List<int> items = new List<int>();
+            items.Add(id);
+            DeletItems(items);
+        }
         public void DeletItems(List<int> deletedItems)
         {
             string query = "Delete from UsedStock where JobID=@id";
@@ -86,7 +94,7 @@ namespace JobInvoice.SQLFunctions
 
         public void InsertItems(List<UsedStockItem> items)
         {
-            string query = "Insert into UsedStock values(@jobID, @name, @height, @width, @vat, @price)";
+            string query = "Insert into UsedStock values(@jobID, @name, @height, @width, @vat, @price, @unitPrice)";
             using (SqlConnection connection = new SqlConnection(MasterConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -106,8 +114,8 @@ namespace JobInvoice.SQLFunctions
                     {
                         command.Parameters.AddWithValue("@vat", 0);
                     }
-                    command.Parameters.AddWithValue("@vat", item.Vat);
                     command.Parameters.AddWithValue("@price", item.Price);
+                    command.Parameters.AddWithValue("@unitPrice", item.Price);
                     command.ExecuteNonQuery();
                 }
                 connection.Close();

@@ -16,12 +16,13 @@ namespace JobInvoice.Models
             modified = true;
         }
 
-        private int _JobID;
+        private int _JobID = -1;
         private string _Name;
         private int _Height;
         private int _Width;
         private bool _Vat;
         private decimal _Price;
+        private decimal _UnitPrice;
 
         public int JobID
         {
@@ -95,6 +96,19 @@ namespace JobInvoice.Models
                 }
             }
         }
+
+        public decimal UnitPrice
+        {
+            get { return _UnitPrice; }
+            set
+            {
+                if (_UnitPrice != value)
+                {
+                    _UnitPrice = value;
+                    NotifyPropertyChanged("UnitPrice");
+                }
+            }
+        }
         public bool modified { get; set; } = true;
 
         private UsedStockItem backupCopy;
@@ -116,6 +130,7 @@ namespace JobInvoice.Models
             this.Width = backupCopy.Width;
             this.Vat = backupCopy.Vat;
             this.Price = backupCopy.Price;
+            this.UnitPrice = backupCopy.UnitPrice;
             this.modified = backupCopy.modified;
         }
         public void EndEdit()
@@ -123,6 +138,15 @@ namespace JobInvoice.Models
             if (!inEdit) return;
             inEdit = false;
             backupCopy = null;
+        }
+
+        public decimal GetVatAmount()
+        {
+            if (!this.Vat)
+            {
+                return 0;
+            }
+            return Price * (decimal)0.15;
         }
     }
 }

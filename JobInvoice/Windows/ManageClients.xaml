@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:JobInvoice.Windows"
+        xmlns:local="clr-namespace:JobInvoice.Validation"
         mc:Ignorable="d"
         Title="ManageClients" Height="450" Width="800">
     <Grid>
@@ -11,15 +11,58 @@
             <ScrollViewer x:Name="pendingImageScroll" Margin="5,5,5,5" HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" >
                 <DataGrid x:Name="datagridClients" HorizontalAlignment="Left" Height="285" VerticalAlignment="Top" 
-                          AutoGenerateColumns="False" CanUserAddRows="True">
+                          AutoGenerateColumns="False" CanUserAddRows="True"
+                          CellEditEnding="DatagridClients_CellEditEnding">
+
+                    <DataGrid.Resources>
+                        <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                            <Setter Property="Padding" Value="-2"/>
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                    <Setter Property="ToolTip" 
+                                        Value="{Binding RelativeSource={RelativeSource Self},
+                                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding ClientID}"  Header="Client ID" IsReadOnly="False" Width="80"/>
-                        <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" IsReadOnly="False" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding ClientID, ValidatesOnExceptions=True}"  Header="Client ID" IsReadOnly="False" Width="80"/>
+                        <DataGridTextColumn Binding="{Binding FirstName, ValidatesOnExceptions=True}" Header="First Name" IsReadOnly="False" Width="150"/>
                         <DataGridTextColumn Binding="{Binding Surname}"  Header="Last Name" IsReadOnly="False" Width="150"/>
                         <DataGridTextColumn Binding="{Binding Number}" Header="Number" IsReadOnly="False" Width="150"/>
                         <DataGridTextColumn Binding="{Binding Email}"  Header="e-mail" IsReadOnly="False" Width="150"/>
-                        <DataGridTextColumn Binding="{Binding Address}" Header="Address" IsReadOnly="False" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding IDNumber}" Header="ID-Number" IsReadOnly="False" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding Street}" Header="Street" IsReadOnly="False" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding StreetNumber}" Header="Street Number" IsReadOnly="False" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding Suburb}" Header="Suburb" IsReadOnly="False" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding City}" Header="City" IsReadOnly="False" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding Country}" Header="Country" IsReadOnly="False" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding PostalCode}" Header="PostalCode" IsReadOnly="False" Width="200"/>
                     </DataGrid.Columns>
+
+                    <DataGrid.RowValidationRules>
+                        <local:ClientValidationRule ValidationStep="UpdatedValue"/>
+                    </DataGrid.RowValidationRules>
+
+                    <DataGrid.RowValidationErrorTemplate>
+                        <ControlTemplate>
+                            <Grid Margin="0,-2,0,-2"
+                                  ToolTip="{Binding RelativeSource={RelativeSource
+                                            FindAncestor, AncestorType={x:Type DataGridRow}},
+                                            Path=(Validation.Errors)[0].ErrorContent}">
+                                <Ellipse StrokeThickness="0" Fill="Red" 
+                                            Width="{TemplateBinding FontSize}" 
+                                            Height="{TemplateBinding FontSize}"/>
+                                <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
+                                            FontWeight="Bold" Foreground="White" 
+                                            HorizontalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </DataGrid.RowValidationErrorTemplate>
+
                 </DataGrid>
             </ScrollViewer>
         </Grid>

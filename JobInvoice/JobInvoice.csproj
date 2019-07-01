@@ -51,6 +51,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="MigraDoc.DocumentObjectModel-wpf, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc-wpf.1.50.5147\lib\net30\MigraDoc.DocumentObjectModel-wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering-wpf, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc-wpf.1.50.5147\lib\net30\MigraDoc.Rendering-wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.RtfRendering-wpf, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc-wpf.1.50.5147\lib\net30\MigraDoc.RtfRendering-wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp-wpf, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc-wpf.1.50.5147\lib\net30\PdfSharp-wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting-wpf, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp-MigraDoc-wpf.1.50.5147\lib\net30\PdfSharp.Charting-wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -74,17 +89,23 @@
     </ApplicationDefinition>
     <Compile Include="Controllers\CompareClientsList.cs" />
     <Compile Include="Controllers\CompareStockItemList.cs" />
+    <Compile Include="Controllers\JobController.cs" />
+    <Compile Include="Controllers\PdfController.cs" />
     <Compile Include="DatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Models\Company.cs" />
     <Compile Include="Models\UsedStockItem.cs" />
+    <Compile Include="PDFWriter\CreatePDF.cs" />
     <Compile Include="SQLFunctions\SqlClient.cs" />
+    <Compile Include="SQLFunctions\SqlCompany.cs" />
     <Compile Include="SQLFunctions\SqlJob.cs" />
     <Compile Include="SQLFunctions\SqlStock.cs" />
     <Compile Include="SQLFunctions\SqlConString.cs" />
     <Compile Include="SQLFunctions\SqlUsedStock.cs" />
+    <Compile Include="Validation\ClientValidationRule.cs" />
     <Compile Include="Validation\UsedStockItemValidationRule.cs" />
     <Compile Include="ViewModels\AllClientsViewModel.cs" />
     <Compile Include="ViewModels\AllJobsViewModel.cs" />
@@ -93,14 +114,14 @@
     <Compile Include="Windows\ManageClients.xaml.cs">
       <DependentUpon>ManageClients.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ManageCompany.xaml.cs">
+      <DependentUpon>ManageCompany.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ManageJobs.xaml.cs">
       <DependentUpon>ManageJobs.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ManageStock.xaml.cs">
       <DependentUpon>ManageStock.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\NewClient.xaml.cs">
-      <DependentUpon>NewClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\NewJob.xaml.cs">
       <DependentUpon>NewJob.xaml</DependentUpon>
@@ -121,15 +142,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\ManageCompany.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ManageJobs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ManageStock.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\NewClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,6 +191,7 @@
     <None Include="DatabaseDataSet.xss">
       <DependentUpon>DatabaseDataSet.xsd</DependentUpon>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -178,14 +200,19 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Invoicer\Invoicer.csproj">
+      <Project>{e5ba227e-4afe-448a-b879-a2784b3fc97c}</Project>
+      <Name>Invoicer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Database.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Database_log.ldf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>Database.mdf</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

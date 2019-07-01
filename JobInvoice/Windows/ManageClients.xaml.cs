@@ -54,5 +54,31 @@ namespace JobInvoice.Windows
         {
             this.Close();
         }
+
+        private void DatagridClients_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Cancel) return;
+            if((string)e.Column.Header == "Client ID")
+            {
+                string testID = ((TextBox)e.EditingElement).Text;
+                if (!CheckUniqueClientID(testID))
+                {
+                    MessageBox.Show("Please enter a unique Client ID");
+                    (sender as DataGrid).CancelEdit(DataGridEditingUnit.Cell);
+                }
+            }
+        }
+
+        private bool CheckUniqueClientID(string testID)
+        {
+            foreach(Client client in allClientsView.ClientListObservable)
+            {
+                if (client.ClientID == testID)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

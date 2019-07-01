@@ -44,22 +44,23 @@ namespace JobInvoice.Windows
         Dictionary<string, StockItem> stockDict = new Dictionary<string, StockItem>();
 
         //initialize form
-        public NewJob()
+        public NewJob(Job job)
         {
             this.Resources.Add("stockItems", stockItems);
-            //UsedStockItem item = new UsedStockItem();
-            //item.Name = "a";
-            //item.Height = 10;
-            //item.Vat = true;
-            //usedMaterials.UsedStockItemsObservable.Add(item);
             InitializeComponent();
             GetClients();
             GetMaterials();
+
+            if (job.JobID != -1)
+            {
+                SetExistingJob(job);
+            }
+
             comboClientID.ItemsSource = ClientIDList;
             comboClientName.ItemsSource = ClientNameList;
             datagridMaterials.ItemsSource = usedMaterials.UsedStockItemsObservable;
         }
-
+       
         // get constants
         private void GetClients()
         {
@@ -84,6 +85,39 @@ namespace JobInvoice.Windows
                 stockItems.Add(stock.Name);
                 stockDict.Add(stock.Name, stock);
             }
+        }
+
+        // set existing job values
+        private void SetExistingJob(Job job)
+        {
+            // set ID
+            lblJobID.Content = job.JobID.ToString();
+            // set Client ID
+            comboClientID.Text = job.ClientID;
+            // set Client Name
+            comboClientName.Text = job.ClientName;
+            // set Description
+            txtDescription.Text = job.Description;
+            // set DateIn
+            dateStart.Text = job.DateIn.ToString();
+            // set DateOut
+            dateEnd.Text = job.DateOut.ToString();
+            // set StockItems
+            usedMaterials.UsedStockItemsObservable = job.UsedStockObservable();
+            // set HourRate
+            txtRate.Text = job.HourRate.ToString();
+            // set CompletionTime
+            txtTimeLimit.Text = job.CompletionTime.ToString();
+            // set TimeLimit
+            txtCompTime.Text = job.TimeRemaining.ToString();
+            // set LabourCost
+            txtTotalLabour.Text = job.LabourCost.ToString();
+            // set JobVat
+            txtTotalVat.Text = job.JobVat.ToString();
+            // set JobTotalIncVat
+            txtTotalIncVat.Text = job.JobTotalIncVat.ToString();
+            // set JobTotalExlVat
+            txtTotalExcVat.Text = job.JobTotalExcVat.ToString();
         }
 
         // get focus
@@ -199,12 +233,11 @@ namespace JobInvoice.Windows
         }
         private void BtnAddJob_Click(object sender, RoutedEventArgs e)
         {
-            //result = SetJob();
-            result = TestJob();
+            result = SetJob();
+            //result = TestJob();
             Window.GetWindow(this).DialogResult = true;
             Window.GetWindow(this).Close();
         }
-        
         // return job
         private Job TestJob()
         {
@@ -230,17 +263,24 @@ namespace JobInvoice.Windows
         private Job SetJob()
         {
             Job job = new Job();
-            job.JobID = -1;
+            job.JobID = Convert.ToInt32(lblJobID.Content);
             job.ClientID = comboClientID.Text;
             job.ClientName = comboClientName.Text;
             job.Description = txtDescription.Text;
             job.DateIn = dateStart.SelectedDate.Value.Date;
             job.DateOut = dateEnd.SelectedDate.Value.Date;
-            job.StockItems = new List<UsedStockItem>();
-            job.TimeRemaining = Convert.ToInt32(txtTimeLimit.Text);
+            
+            List<UsedStockItem> stockItems = new List<UsedStockItem>();
+            foreach(UsedStockItem item in usedMaterials.UsedStockItemsObservable)
+            {
+                stockItems.Add(item);
+            }
+            job.StockItems = stockItems;
+
+            job.TimeRemaining = Convert.ToDecimal(txtTimeLimit.Text);
             job.Completed = false;
             job.HourRate = Convert.ToDecimal(txtRate.Text);
-            job.CompletionTime = Convert.ToDecimal(txtTime.Text);
+            job.CompletionTime = Convert.ToDecimal(txtCompTime.Text);
             job.LabourCost = Convert.ToDecimal(txtTotalLabour.Text);
             job.JobTotalExcVat = Convert.ToDecimal(txtTotalExcVat.Text);
             job.JobVat = Convert.ToDecimal(txtTotalVat.Text);
@@ -248,7 +288,5 @@ namespace JobInvoice.Windows
 
             return job;
         }
-
-       
     }
 }

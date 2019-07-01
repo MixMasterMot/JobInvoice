@@ -9,10 +9,18 @@ using System.Threading.Tasks;
 namespace JobInvoice.Models
 {
     
-    public class Client : INotifyPropertyChanged
+    public class Client : INotifyPropertyChanged, IEditableObject
     {
         public string _ClientID;
-        public string _Address = "";
+
+        public string _Street = "";
+        public string _StreetNumber = "";
+        public string _Suburb = "";
+        public string _City = "";
+        public string _Country = "";
+        public string _PostalCode = "";
+        public string _IDNumber = "";
+
         public string _FirstName;
         public string _Surname = "";
         public string _Number = "";
@@ -30,18 +38,93 @@ namespace JobInvoice.Models
                 }
             }
         }
-        public string Address
+        public string Street
         {
-            get { return _Address; }
+            get { return _Street; }
             set
             {
-                if (_Address != value)
+                if (_Street != value)
                 {
-                    _Address = value;
+                    _Street = value;
                     NotifyPropertyChanged();
                 }
             }
         }
+        public string StreetNumber
+        {
+            get { return _StreetNumber; }
+            set
+            {
+                if (_StreetNumber != value)
+                {
+                    _StreetNumber = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Suburb
+        {
+            get { return _Suburb; }
+            set
+            {
+                if (_Suburb != value)
+                {
+                    _Suburb = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string City
+        {
+            get { return _City; }
+            set
+            {
+                if (_City != value)
+                {
+                    _City = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Country
+        {
+            get { return _Country; }
+            set
+            {
+                if (_Country != value)
+                {
+                    _Country = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string PostalCode
+        {
+            get { return _PostalCode; }
+            set
+            {
+                if (_PostalCode != value)
+                {
+                    _PostalCode = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string IDNumber
+        {
+            get { return _IDNumber; }
+            set
+            {
+                if (_IDNumber != value)
+                {
+                    _IDNumber = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public string FirstName
         {
             get { return _FirstName; }
@@ -102,6 +185,42 @@ namespace JobInvoice.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             modified = true;
+        }
+
+        private Client backupCopy;
+        private bool inEdit;
+        public void BeginEdit()
+        {
+            if (!inEdit) return;
+            inEdit = true;
+            backupCopy = (Client)this.MemberwiseClone();
+        }
+
+        public void EndEdit()
+        {
+            if (!inEdit) return;
+            inEdit = false;
+            backupCopy = null;
+            modified = true;
+        }
+
+        public void CancelEdit()
+        {
+            if (!inEdit) return;
+            inEdit = false;
+            this.modified = backupCopy.modified;
+            this.ClientID = backupCopy.ClientID;
+            this.FirstName = backupCopy.FirstName;
+            this.Surname = backupCopy.Surname;
+            this.Number = backupCopy.Number;
+            this.Email = backupCopy.Email;
+            this.Street = backupCopy.Street;
+            this.StreetNumber = backupCopy.StreetNumber;
+            this.Suburb = backupCopy.Suburb;
+            this.City = backupCopy.City;
+            this.Country = backupCopy.Country;
+            this.PostalCode = backupCopy.PostalCode;
+            this.IDNumber = backupCopy.IDNumber;
         }
     }
 }

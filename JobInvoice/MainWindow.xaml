@@ -14,6 +14,7 @@
                     <MenuItem x:Name="menuManageClients" Header="Manage Clients"/>
                     <MenuItem x:Name="menuManageJobs" Header="Manage Jobs"/>
                     <MenuItem x:Name="menuManageStock" Header="Manage Stock"/>
+                    <MenuItem x:Name="menuManageCompanyInfo" Header="Manage Company Info" Click="MenuManageCompanyInfo_Click"/>
                     <MenuItem x:Name="menuExit" Header="_Exit"/>
                 </MenuItem>
                 <Button x:Name="btnNewJob" Content="Add New Job" Height="25" VerticalAlignment="Center" Width="95" Margin="5,2,0,2" Click="btnNewJob_Click" HorizontalAlignment="Center" />
@@ -55,7 +56,25 @@
         <Grid x:Name="JobGrid" Margin="10,110,10,10" Background="#FFCF9F9F">
             <ScrollViewer x:Name="pendingImageScroll" Margin="5" HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
-                <DataGrid x:Name="JobDataGrid" Margin="10" Background="#FF5891F3" AutoGenerateColumns="False" CanUserAddRows="false">
+                <DataGrid x:Name="JobDataGrid" Margin="10" Background="#FF5891F3" AutoGenerateColumns="False" 
+                          CanUserAddRows="false" CanUserDeleteRows="False">
+
+                    <DataGrid.Resources>
+                        <ContextMenu x:Key="rowContextMenu">
+                            <ContextMenu.Items>
+                                <MenuItem Header="Edit Job" Click="EditJobContext_Click"/>
+                                <MenuItem Header="Delete Job" Click="DeleteJobContext_Click"/>
+                                <MenuItem Header="Generate Invoice" Click="PrintInvoice_Click"/>
+                            </ContextMenu.Items>
+                        </ContextMenu>
+                    </DataGrid.Resources>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                            <Setter Property="ContextMenu" Value="{StaticResource rowContextMenu}"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding JobID}"  Header="Job ID" IsReadOnly="True"/>
                         <DataGridTextColumn Binding="{Binding ClientID}" Header="Account ID" IsReadOnly="True"/>
@@ -91,6 +110,9 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
+
+                    
+                    
                 </DataGrid>
             </ScrollViewer>
         </Grid>
